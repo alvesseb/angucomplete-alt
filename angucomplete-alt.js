@@ -97,10 +97,16 @@
 
       scope.currentIndex = null;
       scope.searching = false;
-      unbindInitialValue = scope.$watch('initialValue', function(newval, oldval) {
 
+      scope.internalControl = scope.control || {};
+      scope.internalControl.updateInitialValue = function(value) {
+        initValue(value)
+      }
+
+      scope.$watch('initialValue', initValue);
+      function initValue(newval, oldval)
+      {
         if (newval) {
-          unbindInitialValue();
 
           if (typeof newval === 'object') {
             scope.searchStr = extractTitle(newval);
@@ -115,7 +121,11 @@
 
           handleRequired(true);
         }
-      });
+        else {
+          scope.searchStr = null;
+          handleRequired(false);
+        }
+      }
 
       scope.$on('angucomplete-alt:clearInput', function (event, elementId) {
         if (!elementId || elementId === scope.id) {
@@ -769,7 +779,8 @@
         autoMatch: '@',
         focusOut: '&',
         focusIn: '&',
-        inputName: '@'
+        inputName: '@',
+        control: '='
       },
       templateUrl: function(element, attrs) {
         return attrs.templateUrl || TEMPLATE_URL;
