@@ -79,7 +79,6 @@
       var dd = elem[0].querySelector('.angucomplete-dropdown');
       var isScrollOn = false;
       var mousedownOn = null;
-      var unbindInitialValue;
       var displaySearching;
       var displayNoResults;
 
@@ -103,7 +102,6 @@
         initValue(value)
       }
 
-      scope.$watch('initialValue', initValue);
       function initValue(newval, oldval)
       {
         if (newval) {
@@ -706,13 +704,7 @@
 
       // check required field
       if (scope.fieldRequired && ctrl) {
-        // check initial value, if given, set validitity to true
-        if (scope.initialValue) {
-          handleRequired(true);
-        }
-        else {
-          handleRequired(false);
-        }
+        handleRequired(true);
       }
 
       scope.inputType = attrs.type ? attrs.type : 'text';
@@ -751,7 +743,6 @@
       scope: {
         selectedObject: '=',
         disableInput: '=',
-        initialValue: '=',
         localData: '=',
         remoteUrlRequestFormatter: '=',
         remoteUrlRequestWithCredentials: '@',
